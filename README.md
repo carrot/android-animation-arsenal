@@ -45,7 +45,7 @@ For Window Transitions simply call:
               }
           }, Fade.IN));
 
-  //AS WELL YOU CAN HAVE TOTAL CONTROL OF THE EXIT TRANSITION
+  // As well you can have total control of the exit transition
   AnimationArsenal.setExitTransition(getWindow(), AnimationArsenal
           .getExplodeTransition(new Transition.TransitionListener()
           {
@@ -87,6 +87,7 @@ You can play Android Resource Animations as well as custom made animations from 
            });
 ```
 Compability for Shared Element Transition - SDK < 21 (Min SDK Version 12)
+
 At the moment the library has backward compatibility for Shared Element Transition below SDk 21.
 
 ```java
