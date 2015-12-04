@@ -30,41 +30,20 @@ Resource Animations:
 ##In Use
 
 For Window Transitions simply call:
+
 ```java
-  //HERE WE ARE SETTING THE ENTER TRANSITION
+  // Here we are setting the Enter Transition
   AnimationArsenal.setEnterTransition(getWindow(), AnimationArsenal
           .getFadeTransition(new Transition.TransitionListener()
           {
               @Override
-              public void onTransitionStart(Transition transition)
-              {
-              }
-
-              @Override
               public void onTransitionEnd(Transition transition)
               {
-                  //IN HERE YOU CAN START OTHER ANIMATIONS AFTER THE ACTIVITY FINISHES THE 
-                  // ENTER TRANSITION
+                  // In here you can start other animations at the end of the enter transition
                   AnimationArsenal.circularReveal(myView,
                           getApplicationContext(), AnimationArsenal.RevealGravity.CENTER);
               }
-
-              @Override
-              public void onTransitionCancel(Transition transition)
-              {
-              }
-
-              @Override
-              public void onTransitionPause(Transition transition)
-              {
-              }
-
-              @Override
-              public void onTransitionResume(Transition transition)
-              {
-              }
           }, Fade.IN));
-
 
   //AS WELL YOU CAN HAVE TOTAL CONTROL OF THE EXIT TRANSITION
   AnimationArsenal.setExitTransition(getWindow(), AnimationArsenal
@@ -73,59 +52,29 @@ For Window Transitions simply call:
               @Override
               public void onTransitionStart(Transition transition)
               {
-                  //IN HERE YOU CAN START OTHER ANIMATIONS AT THE BEGINNING OF EXIT
-                  // TRANSITION IN THE ACTIVITY
+                  // In here you can start other animations at the beginning of the exit transition
                   AnimationArsenal.playAnimationFadeOut(getApplicationContext(), myView, 700,
-                          null);
-              }
-
-              @Override
-              public void onTransitionEnd(Transition transition)
-              {
-              }
-
-              @Override
-              public void onTransitionCancel(Transition transition)
-              {
-              }
-
-              @Override
-              public void onTransitionPause(Transition transition)
-              {
-              }
-
-              @Override
-              public void onTransitionResume(Transition transition)
-              {
+                          myAnimationListener);
               }
           }, 700));
 ```
 Animation Resource Animations
 
 You can play Android Resource Animations as well as custom made animations from your application project.
+
 ```java
-  //ANDROID RESOURCE EXAMPLE
+  // Android resource example
   AnimationArsenal.playAnimationScale(myView, 700, 0, 1,
           new Animation.AnimationListener()
            {
               @Override
                public void onAnimationStart(Animation animation)
               {
-                  //START OTHER ANIMATIONS IF NEEDED
-              }
-
-              @Override
-              public void onAnimationEnd(Animation animation)
-              {
-              }
-
-              @Override
-              public void onAnimationRepeat(Animation animation)
-              {
+                  // Start other animations if needed
               }
            });
 
-  //APPLICATION RESOURCE EXAMPLE
+  // Application resource example
   AnimationArsenal.playAnimationFromResource(getApplicationContext(), myView, R.anim
                   .my_animation, 700,
           new Animation.AnimationListener()
@@ -133,31 +82,21 @@ You can play Android Resource Animations as well as custom made animations from 
               @Override
               public void onAnimationStart(Animation animation)
               {
-                   //START OTHER ANIMATIONS IF NEEDED
-              }
-
-              @Override
-              public void onAnimationEnd(Animation animation)
-              {
-              }
-
-              @Override
-              public void onAnimationRepeat(Animation animation)
-              {
+                   // Start other animations if needed
               }
            });
 ```
-Compability for Shared Element Transition - SDK < 21
+Compability for Shared Element Transition - SDK < 21 (Min SDK Version 12)
 At the moment the library has backward compatibility for Shared Element Transition below SDk 21.
 
-```
-  //ADD THIS IN ONCREATE()
+```java
+  // Add this in onCreate()
   if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
   {
       AnimationArsenal.compatEnterSharedElement(myStartView, myTargetView);
   }
 
-  //ADD THIS IN ONBACKPRESSED()
+  // Add this in onBackPressed()
   if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
   {
       AnimationArsenal.compatExitSharedElement(myStartView, myTargetView, new Runnable()
@@ -165,9 +104,8 @@ At the moment the library has backward compatibility for Shared Element Transiti
           @Override
           public void run()
           {
-
+          finish();
           }
       });
    }
 ```
-
