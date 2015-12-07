@@ -1,7 +1,6 @@
 package com.android_animation_arsenal;
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
@@ -11,8 +10,6 @@ import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
@@ -40,15 +37,14 @@ public class AnimationArsenal
     public static Transition getExplodeTransition(Transition.TransitionListener listener, int
             duration)
     {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return null;
+            Explode explode = new Explode();
+            explode.setDuration(duration);
+            explode.addListener(listener);
+            return explode;
         }
-
-        Explode explode = new Explode();
-        explode.setDuration(duration);
-        explode.addListener(listener);
-        return explode;
+        return null;
     }
 
     /**
@@ -62,15 +58,14 @@ public class AnimationArsenal
     public static Transition getSlideTransition(Transition.TransitionListener listener, int
             duration, int gravity)
     {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return null;
+            Slide slide = new Slide(gravity);
+            slide.setDuration(duration);
+            slide.addListener(listener);
+            return slide;
         }
-
-        Slide slide = new Slide(gravity);
-        slide.setDuration(duration);
-        slide.addListener(listener);
-        return slide;
+        return null;
     }
 
     /**
@@ -94,11 +89,6 @@ public class AnimationArsenal
      */
     public static void circularReveal(final View view, Context context, RevealGravity gravity)
     {
-        if(view == null)
-        {
-            return;
-        }
-
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
             return;
@@ -168,7 +158,6 @@ public class AnimationArsenal
                                        {
                                        }
                                    }
-
         );
         animatorReveal.start();
     }
@@ -196,14 +185,14 @@ public class AnimationArsenal
      */
     public static Transition getFadeTransition(Transition.TransitionListener listener, int fadeMode)
     {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return null;
+            Fade fade = new Fade(fadeMode);
+            fade.addListener(listener);
+            return fade;
         }
 
-        Fade fade = new Fade(fadeMode);
-        fade.addListener(listener);
-        return fade;
+        return null;
     }
 
     /**
@@ -217,26 +206,26 @@ public class AnimationArsenal
                                                          View leftViewContainer,
                                                          View rightViewContainer)
     {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return null;
+            TransitionSet set = new TransitionSet();
+            Slide slideTop = new Slide(android.view.Gravity.TOP);
+            slideTop.addTarget(topViewContainer);
+            set.addTransition(slideTop);
+            Slide slideBottom = new Slide(android.view.Gravity.BOTTOM);
+            slideBottom.addTarget(bottomViewContainer);
+            set.addTransition(slideBottom);
+            Slide slideLeft = new Slide(android.view.Gravity.LEFT);
+            slideLeft.addTarget(leftViewContainer);
+            set.addTransition(slideLeft);
+            Slide slideRight = new Slide(android.view.Gravity.RIGHT);
+            slideRight.addTarget(rightViewContainer);
+            set.addTransition(slideRight);
+            set.setDuration(duration);
+            return set;
         }
 
-        TransitionSet set = new TransitionSet();
-        Slide slideTop = new Slide(android.view.Gravity.TOP);
-        slideTop.addTarget(topViewContainer);
-        set.addTransition(slideTop);
-        Slide slideBottom = new Slide(android.view.Gravity.BOTTOM);
-        slideBottom.addTarget(bottomViewContainer);
-        set.addTransition(slideBottom);
-        Slide slideLeft = new Slide(android.view.Gravity.LEFT);
-        slideLeft.addTarget(leftViewContainer);
-        set.addTransition(slideLeft);
-        Slide slideRight = new Slide(android.view.Gravity.RIGHT);
-        slideRight.addTarget(rightViewContainer);
-        set.addTransition(slideRight);
-        set.setDuration(duration);
-        return set;
+        return null;
     }
 
     /**
@@ -248,18 +237,17 @@ public class AnimationArsenal
      */
     public static boolean setEnterTransition(Window window, Transition transition)
     {
-        if(window == null || transition == null)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return false;
+            if(window == null || transition == null)
+            {
+                return false;
+            }
+            window.setEnterTransition(transition);
+            return true;
         }
+        return false;
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            return false;
-        }
-
-        window.setEnterTransition(transition);
-        return true;
     }
 
     /**
@@ -272,18 +260,17 @@ public class AnimationArsenal
 
     public static boolean setExitTransition(Window window, Transition transition)
     {
-        if(window == null || transition == null)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            return false;
+            if(window == null || transition == null)
+            {
+                return false;
+            }
+            window.setExitTransition(transition);
+            return true;
         }
+        return false;
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-        {
-            return false;
-        }
-
-        window.setExitTransition(transition);
-        return true;
     }
 
     /**
@@ -295,11 +282,11 @@ public class AnimationArsenal
      * @param duration          duration of animation
      * @param animationListener animation listener
      */
-    public static void playAnimationFromResource(Context context, View view,
-                                                 int animationId, int duration,
-                                                 Animation.AnimationListener animationListener)
+    public static Animation playAnimationFromResource(Context context, View view,
+                                                      int animationId, int duration,
+                                                      Animation.AnimationListener animationListener)
     {
-        createAnimation(context, view, animationId, duration, animationListener);
+        return animate(context, view, animationId, duration, animationListener);
     }
 
     /**
@@ -310,10 +297,10 @@ public class AnimationArsenal
      * @param duration          duration of animation
      * @param animationListener animation listener
      */
-    public static void playAnimationFadeIn(Context context, View view, int duration,
-                                           Animation.AnimationListener animationListener)
+    public static Animation playAnimationFadeIn(Context context, View view, int duration,
+                                                Animation.AnimationListener animationListener)
     {
-        createAnimation(context, view, android.R.anim.fade_in, duration, animationListener);
+        return animate(context, view, android.R.anim.fade_in, duration, animationListener);
     }
 
     /**
@@ -324,10 +311,10 @@ public class AnimationArsenal
      * @param duration          duration of animation
      * @param animationListener animation listener
      */
-    public static void playAnimationFadeOut(Context context, View view, int duration,
-                                            Animation.AnimationListener animationListener)
+    public static Animation playAnimationFadeOut(Context context, View view, int duration,
+                                                 Animation.AnimationListener animationListener)
     {
-        createAnimation(context, view, android.R.anim.fade_out, duration, animationListener);
+        return animate(context, view, android.R.anim.fade_out, duration, animationListener);
     }
 
     /**
@@ -338,10 +325,10 @@ public class AnimationArsenal
      * @param duration          duration of animation
      * @param animationListener animation listener
      */
-    public static void playAnimationSlideLeft(Context context, View view, int duration,
-                                              Animation.AnimationListener animationListener)
+    public static Animation playAnimationSlideLeft(Context context, View view, int duration,
+                                                   Animation.AnimationListener animationListener)
     {
-        createAnimation(context, view, duration, android.R.anim.slide_in_left, animationListener);
+        return animate(context, view, duration, android.R.anim.slide_in_left, animationListener);
     }
 
     /**
@@ -352,10 +339,10 @@ public class AnimationArsenal
      * @param duration          duration of animation
      * @param animationListener animation listener
      */
-    public static void playAnimationSlideRight(Context context, View view, int duration,
-                                               Animation.AnimationListener animationListener)
+    public static Animation playAnimationSlideRight(Context context, View view, int duration,
+                                                    Animation.AnimationListener animationListener)
     {
-        createAnimation(context, view, duration, android.R.anim.slide_out_right, animationListener);
+        return animate(context, view, duration, android.R.anim.slide_out_right, animationListener);
     }
 
     /**
@@ -366,18 +353,14 @@ public class AnimationArsenal
      * @param duration duration of animation
      * @param listener animation listener
      */
-    private static void createAnimation(Context context, View view, int animationId,
-                                        int duration, Animation.AnimationListener listener)
+    private static Animation animate(Context context, View view, int animationId,
+                                     int duration, Animation.AnimationListener listener)
     {
-        if(view == null)
-        {
-            return;
-        }
-
         final Animation anim = AnimationUtils.loadAnimation(context, animationId);
         anim.setAnimationListener(listener);
         anim.setDuration(duration);
         view.startAnimation(anim);
+        return anim;
     }
 
     /**
@@ -388,8 +371,8 @@ public class AnimationArsenal
      * @param startScale starting scale size
      * @param endScale   ending scale size
      */
-    public static void playAnimationScale(View view, int duration, float startScale,
-                                          float endScale, Animation.AnimationListener listener)
+    public static Animation playAnimationScale(View view, int duration, float startScale,
+                                               float endScale, Animation.AnimationListener listener)
     {
         final Animation anim = new ScaleAnimation(
                 startScale, endScale, // Start and end values for the X axis scaling
@@ -400,6 +383,7 @@ public class AnimationArsenal
         anim.setDuration(duration);
         anim.setAnimationListener(listener);
         view.startAnimation(anim);
+        return anim;
     }
 
     /**
@@ -410,9 +394,9 @@ public class AnimationArsenal
      * @param fromDegrees starting rotation
      * @param toDegrees   ending rotation
      */
-    public static void playAnimationRotate(View view, int duration, float fromDegrees,
-                                           float toDegrees, int repeat, Animation
-                                                   .AnimationListener listener)
+    public static Animation playAnimationRotate(View view, int duration, float fromDegrees,
+                                                float toDegrees, int repeat, Animation
+                                                        .AnimationListener listener)
     {
         final Animation anim = new RotateAnimation(
                 fromDegrees, toDegrees,
@@ -423,11 +407,12 @@ public class AnimationArsenal
         anim.setRepeatCount(repeat); // -1 = infinite repeated
         anim.setAnimationListener(listener);
         view.startAnimation(anim);
+        return anim;
     }
 
 
     /**
-     * Animate Enter of Shared Element in < 21
+     * Animate Enter of Shared Element in < 21 (Min SDK 12)
      * Use this in onCreate() with a safety check.
      * Set 'compatExitSharedElement' in onBackPressed() as well with a safety check to control
      * the shared element animation at exiting activity
@@ -437,46 +422,49 @@ public class AnimationArsenal
      */
     public static void compatEnterSharedElement(final View startView, final View targetView)
     {
-        targetView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver
-                .OnPreDrawListener()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
         {
-            @Override
-            public boolean onPreDraw()
+            targetView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver
+                    .OnPreDrawListener()
             {
-                targetView.getViewTreeObserver().removeOnPreDrawListener(this);
+                @Override
+                public boolean onPreDraw()
+                {
+                    targetView.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                //get image view locations
-                int[] targetImageLocation = new int[2];
-                targetView.getLocationOnScreen(targetImageLocation);
-                int[] startImageLocation = new int[2];
-                startView.getLocationOnScreen(startImageLocation);
+                    //get image view locations
+                    int[] targetImageLocation = new int[2];
+                    targetView.getLocationOnScreen(targetImageLocation);
+                    int[] startImageLocation = new int[2];
+                    startView.getLocationOnScreen(startImageLocation);
 
-                int xLeft = targetImageLocation[0];
-                int yTop = targetImageLocation[1];
-                int leftDelta = startImageLocation[0] - xLeft;
-                int topDelta = startImageLocation[1] - yTop;
+                    int xLeft = targetImageLocation[0];
+                    int yTop = targetImageLocation[1];
+                    int leftDelta = startImageLocation[0] - xLeft;
+                    int topDelta = startImageLocation[1] - yTop;
 
-                float widthScale = (float) startView.getWidth() / targetView.getWidth();
-                float heightScale = (float) startView.getHeight() / targetView.getHeight();
+                    float widthScale = (float) startView.getWidth() / targetView.getWidth();
+                    float heightScale = (float) startView.getHeight() / targetView.getHeight();
 
-                //set values for animation
-                targetView.setPivotX(0);
-                targetView.setPivotY(0);
-                targetView.setScaleX(widthScale);
-                targetView.setScaleY(heightScale);
-                targetView.setTranslationX(leftDelta);
-                targetView.setTranslationY(topDelta);
-                targetView.animate().setDuration(HALF_SECOND_DURATION)
-                        .scaleX(1).scaleY(1)
-                        .translationX(0).translationY(0)
-                        .setInterpolator(new DecelerateInterpolator());
-                return true;
-            }
-        });
+                    //set values for animation
+                    targetView.setPivotX(0);
+                    targetView.setPivotY(0);
+                    targetView.setScaleX(widthScale);
+                    targetView.setScaleY(heightScale);
+                    targetView.setTranslationX(leftDelta);
+                    targetView.setTranslationY(topDelta);
+                    targetView.animate().setDuration(HALF_SECOND_DURATION)
+                            .scaleX(1).scaleY(1)
+                            .translationX(0).translationY(0)
+                            .setInterpolator(new DecelerateInterpolator());
+                    return true;
+                }
+            });
+        }
     }
 
     /**
-     * Animate Exit of Shared Element in < 21
+     * Animate Exit of Shared Element in < 21 (Min SDK 12)
      * Use this in onBackPressed() with a safety check
      *
      * @param startView  starting view from calling Activity
@@ -485,20 +473,23 @@ public class AnimationArsenal
      */
     public static void compatExitSharedElement(View startView, View targetView, Runnable runnable)
     {
-        float mWidthScale = (float) startView.getWidth() / targetView.getWidth();
-        float mHeightScale = (float) startView.getHeight() / targetView.getHeight();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+        {
+            float mWidthScale = (float) startView.getWidth() / targetView.getWidth();
+            float mHeightScale = (float) startView.getHeight() / targetView.getHeight();
 
-        int[] startImageLocation = new int[2];
-        startView.getLocationOnScreen(startImageLocation);
-        int[] targetImageLocation = new int[2];
-        targetView.getLocationOnScreen(targetImageLocation);
+            int[] startImageLocation = new int[2];
+            startView.getLocationOnScreen(startImageLocation);
+            int[] targetImageLocation = new int[2];
+            targetView.getLocationOnScreen(targetImageLocation);
 
-        int leftDelta = startImageLocation[0] - targetImageLocation[0];
-        int topDelta = startImageLocation[1] - targetImageLocation[1];
+            int leftDelta = startImageLocation[0] - targetImageLocation[0];
+            int topDelta = startImageLocation[1] - targetImageLocation[1];
 
-        targetView.animate().setDuration(HALF_SECOND_DURATION)
-                .scaleX(mWidthScale).scaleY(mHeightScale)
-                .translationX(leftDelta).translationY(topDelta)
-                .withEndAction(runnable);
+            targetView.animate().setDuration(HALF_SECOND_DURATION)
+                    .scaleX(mWidthScale).scaleY(mHeightScale)
+                    .translationX(leftDelta).translationY(topDelta)
+                    .withEndAction(runnable);
+        }
     }
 }
