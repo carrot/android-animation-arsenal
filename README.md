@@ -29,7 +29,7 @@ Resource Animations:
 
 ##In Use
 
-For Window Transitions simply call:
+####For Window Transitions simply call:
 
 ```java
   // Here we are setting the Enter Transition
@@ -45,7 +45,7 @@ For Window Transitions simply call:
               }
           }, Fade.IN));
 
-  // As well you can have total control of the exit transition
+  // You can also have total control of exit transition
   AnimationArsenal.setExitTransition(getWindow(), AnimationArsenal
           .getExplodeTransition(new Transition.TransitionListener()
           {
@@ -53,18 +53,18 @@ For Window Transitions simply call:
               public void onTransitionStart(Transition transition)
               {
                   // In here you can start other animations at the beginning of the exit transition
-                  AnimationArsenal.playAnimationFadeOut(getApplicationContext(), myView, 700,
+                  AnimationArsenal.playAnimationFadeOut(getApplicationContext(), myView, animDuration,
                           myAnimationListener);
               }
           }, 700));
 ```
-Animation Resource Animations
+####Resource Animations
 
 You can play Android Resource Animations as well as custom made animations from your application project.
 
 ```java
   // Android resource example
-  AnimationArsenal.playAnimationScale(myView, 700, 0, 1,
+  AnimationArsenal.playAnimationScale(myView, animDuration, startScale, endScale,
           new Animation.AnimationListener()
            {
               @Override
@@ -76,7 +76,7 @@ You can play Android Resource Animations as well as custom made animations from 
 
   // Application resource example
   AnimationArsenal.playAnimationFromResource(getApplicationContext(), myView, R.anim
-                  .my_animation, 700,
+                  .my_animation, animDuration,
           new Animation.AnimationListener()
           {
               @Override
@@ -86,7 +86,7 @@ You can play Android Resource Animations as well as custom made animations from 
               }
            });
 ```
-Compability for Shared Element Transition - SDK < 21 (Min SDK Version 12)
+####Compability for Shared Element Transition - SDK < 21 (Min SDK Version 12)
 
 At the moment the library has backward compatibility for Shared Element Transition below SDk 21.
 
