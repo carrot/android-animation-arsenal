@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
+import android.support.annotation.AnimRes;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
@@ -87,7 +89,8 @@ public class AnimationArsenal
      * @param context application context
      * @param gravity position where the reveal starts
      */
-    public static void circularReveal(final View view, Context context, RevealGravity gravity)
+    public static void circularReveal(final View view, Context context, int duration,
+                                      RevealGravity gravity)
     {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
@@ -97,30 +100,29 @@ public class AnimationArsenal
         int x = 0;
         int y = 0;
         switch(gravity)
-
         {
             case CENTER:
-                Point point = getViewEpicenter(view);
-                x = point.x;
-                y = point.y;
+                x = view.getWidth() / 2;
+                y = view.getHeight() / 2;
                 break;
             case BOTTOM_LEFT:
-                x = view.getLeft();
-                y = view.getBottom();
+                x = 0;
+                y = view.getHeight();
                 break;
             case BOTTOM_RIGHT:
-                x = view.getRight();
-                y = view.getBottom();
+                x = view.getWidth();
+                y = view.getHeight();
                 break;
             case TOP_LEFT:
-                x = view.getLeft();
-                y = view.getTop();
+                x = 0;
+                y = 0;
                 break;
             case TOP_RIGHT:
-                x = view.getRight();
-                y = view.getTop();
+                x = view.getWidth();
+                y = 0;
                 break;
         }
+        Log.d("x,y", "" + x + " ," + y);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         // big radius to cover view
@@ -131,7 +133,7 @@ public class AnimationArsenal
         final Animator animatorReveal = ViewAnimationUtils.createCircularReveal
                 (view, x, y, 0, bigRadius);
 
-        animatorReveal.setDuration(HALF_SECOND_DURATION);
+        animatorReveal.setDuration(duration);
 
         // add listener to change view visibility
         animatorReveal.addListener(new Animator.AnimatorListener()
@@ -160,20 +162,6 @@ public class AnimationArsenal
                                    }
         );
         animatorReveal.start();
-    }
-
-    public static Point getViewEpicenter(View view)
-    {
-        if(view == null)
-        {
-            return new Point(0, 0);
-        }
-
-        // get location of view
-        int[] location = new int[2];
-        view.getLocationInWindow(location);
-        return new Point(location[0] + view.getMeasuredWidth() / 2,
-                location[1] + view.getMeasuredHeight() / 2);
     }
 
     /**
@@ -289,6 +277,7 @@ public class AnimationArsenal
         return animate(context, view, animationId, duration, animationListener);
     }
 
+
     /**
      * starts fade in animation for specific view
      *
@@ -328,7 +317,7 @@ public class AnimationArsenal
     public static Animation playAnimationSlideLeft(Context context, View view, int duration,
                                                    Animation.AnimationListener animationListener)
     {
-        return animate(context, view, duration, android.R.anim.slide_in_left, animationListener);
+        return animate(context, view, android.R.anim.fade_in, duration, animationListener);
     }
 
     /**
@@ -342,7 +331,7 @@ public class AnimationArsenal
     public static Animation playAnimationSlideRight(Context context, View view, int duration,
                                                     Animation.AnimationListener animationListener)
     {
-        return animate(context, view, duration, android.R.anim.slide_out_right, animationListener);
+        return animate(context, view, android.R.anim.slide_out_right, duration, animationListener);
     }
 
     /**
@@ -353,7 +342,7 @@ public class AnimationArsenal
      * @param duration duration of animation
      * @param listener animation listener
      */
-    private static Animation animate(Context context, View view, int animationId,
+    private static Animation animate(Context context, View view, @AnimRes int animationId,
                                      int duration, Animation.AnimationListener listener)
     {
         final Animation anim = AnimationUtils.loadAnimation(context, animationId);

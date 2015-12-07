@@ -8,15 +8,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+
+import com.android_animation_arsenal.AnimationArsenal;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
 {
+    @Bind(R.id.circularReveal_iv) ImageView mImageViewReveal;
+    @Bind(R.id.specificResource_iv) ImageView mImageViewSpecified;
+    @Bind(R.id.fadeInResource_iv) ImageView mImageViewFadeIn;
+    @Bind(R.id.fadeOutResource_iv) ImageView mImageViewFadeOut;
+    @Bind(R.id.scaleResource_iv) ImageView mImageViewScale;
+    @Bind(R.id.slideLeftResource_iv) ImageView mImageViewSlideLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -30,6 +45,138 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+
+    }
+
+    @OnClick({R.id.circularRevealButton, R.id.specificResourceButton, R.id.fadeInResourceButton,
+            R.id.fadeOutResourceButton, R.id.scaleResourceButton, R.id.slideLeftResourceButton})
+    public void onClick(View view)
+    {
+        switch(view.getId())
+        {
+            case R.id.circularRevealButton:
+                AnimationArsenal.circularReveal(mImageViewReveal, getApplicationContext(), 2000,
+                        AnimationArsenal.RevealGravity.CENTER);
+                break;
+            case R.id.specificResourceButton:
+                AnimationArsenal.playAnimationFromResource(getApplicationContext(),
+                        mImageViewSpecified, R.anim.shrink, 700, new Animation.AnimationListener()
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+                            }
+                        });
+                break;
+            case R.id.fadeInResourceButton:
+                AnimationArsenal.playAnimationFadeIn(getApplicationContext(), mImageViewFadeIn,
+                        700, new Animation.AnimationListener()
+
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+
+                            }
+                        });
+                break;
+            case R.id.fadeOutResourceButton:
+                AnimationArsenal.playAnimationFadeOut(getApplicationContext(), mImageViewFadeOut,
+                        700, new Animation.AnimationListener()
+
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+
+                            }
+                        });
+                break;
+            case R.id.scaleResourceButton:
+                AnimationArsenal.playAnimationScale(mImageViewScale,
+                        700, 0, 1, new Animation.AnimationListener()
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+
+                            }
+                        });
+                break;
+            case R.id.slideLeftResourceButton:
+                AnimationArsenal.playAnimationSlideLeft(getApplicationContext(),
+                        mImageViewSlideLeft,
+                        700, new Animation.AnimationListener()
+
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+
+                            }
+                        });
+                break;
+
+        }
     }
 
     @Override

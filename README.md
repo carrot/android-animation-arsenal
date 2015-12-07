@@ -56,7 +56,7 @@ Resource Animations:
                   AnimationArsenal.playAnimationFadeOut(getApplicationContext(), myView, animDuration,
                           myAnimationListener);
               }
-          }, 700));
+          }, animDuration));
 ```
 ####Resource Animations
 
