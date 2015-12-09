@@ -35,53 +35,44 @@
                     android:textStyle="bold"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/enterTransition_ll"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/enterTransition_ll"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/circularReveal_ll"
-                        android:orientation="horizontal">
+                        android:text="Enter with Fade"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Enter with Fade"/>
-
-                        <Button
-                            android:id="@+id/enterTransitionButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Go"/>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/exitTransition_ll"
+                    <Button
+                        android:id="@+id/enterTransitionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/enterTransition_ll"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Exit with Slide"/>
-
-                        <Button
-                            android:id="@+id/exitTransitionButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Go"/>
-                    </LinearLayout>
-
-
+                        android:padding="5dp"
+                        android:text="Go"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/exitTransition_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/enterTransition_ll"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Exit with Slide"/>
+
+                    <Button
+                        android:id="@+id/exitTransitionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Go"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView
@@ -109,19 +100,12 @@
 
                 <ImageView
                     android:id="@+id/circularReveal_iv"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
                     android:visibility="invisible"/>
 
             </LinearLayout>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Animation From Resource"
-                android:textStyle="bold"/>
 
 
             <TextView

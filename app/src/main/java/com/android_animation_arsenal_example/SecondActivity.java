@@ -5,31 +5,80 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android_animation_arsenal.AnimationArsenal;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class SecondActivity extends AppCompatActivity
 {
+
+    @Bind(R.id.reveal_iv) ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_second);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initAnimations();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+    public void initAnimations()
+    {
+        AnimationArsenal.setEnterTransition(getWindow(), AnimationArsenal
+                .getFadeTransition(new Transition.TransitionListener()
+                {
+                    @Override
+                    public void onTransitionStart(Transition transition) {}
+
+                    @Override
+                    public void onTransitionEnd(Transition transition)
+                    {
+                        AnimationArsenal.circularReveal(mImageView, getApplicationContext(), 700,
+                                AnimationArsenal.RevealGravity.CENTER);
+                    }
+
+                    @Override
+                    public void onTransitionCancel(Transition transition) {}
+
+                    @Override
+                    public void onTransitionPause(Transition transition) {}
+
+                    @Override
+                    public void onTransitionResume(Transition transition) {}
+                }, Fade.MODE_IN));
+
+        AnimationArsenal.setExitTransition(getWindow(), AnimationArsenal.getFadeTransition(new Transition.TransitionListener()
         {
             @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            public void onTransitionStart(Transition transition) {}
+
+            @Override
+            public void onTransitionEnd(Transition transition) {}
+
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+
+            @Override
+            public void onTransitionPause(Transition transition) {}
+
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        }, Fade.MODE_OUT));
+        getWindow().setReturnTransition(AnimationArsenal.getFadeTransition(null, Fade.MODE_OUT));
     }
 
     @Override
@@ -53,7 +102,6 @@ public class SecondActivity extends AppCompatActivity
         {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

@@ -2,7 +2,6 @@ package com.android_animation_arsenal;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.AnimRes;
 import android.transition.Explode;
@@ -11,7 +10,6 @@ import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
@@ -122,7 +120,6 @@ public class AnimationArsenal
                 y = 0;
                 break;
         }
-        Log.d("x,y", "" + x + " ," + y);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         // big radius to cover view
