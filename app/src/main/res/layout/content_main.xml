@@ -12,45 +12,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Window Transitons"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    />
 
                 <LinearLayout
                     android:id="@+id/enterTransition_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Enter with Fade"/>
+                        android:text="Enter with Fade"
+                        />
 
                     <Button
                         android:id="@+id/enterTransitionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="Go"/>
+                        android:text="Play"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -58,19 +66,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/enterTransition_ll"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Exit with Slide"/>
+                        android:text="Exit with Slide"
+                        />
 
                     <Button
                         android:id="@+id/exitTransitionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="Go"/>
+                        android:text="Play"
+                        />
                 </LinearLayout>
 
             </LinearLayout>
@@ -79,7 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reveal"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                />
 
             <LinearLayout
                 android:id="@+id/circularReveal_ll"
@@ -90,20 +102,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Circular Reveal"/>
+                    android:text="Circular Reveal"
+                    />
 
                 <Button
                     android:id="@+id/circularRevealButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/circularReveal_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible"
+                    />
 
             </LinearLayout>
 
@@ -112,32 +127,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Resource Animations"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                />
 
             <LinearLayout
                 android:id="@+id/specificResource_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/exitTransition_ll"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/specificResourceButton"
-                    android:text="SPECIFIC"/>
+                    android:text="SPECIFIC"
+                    />
 
                 <Button
                     android:id="@+id/specificResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/specificResource_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_launcher"/>
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
 
 
@@ -145,26 +163,28 @@
                 android:id="@+id/fadeInResource_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/specificResource_ll"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FADE-IN"/>
+                    android:text="FADE-IN"
+                    />
 
                 <Button
                     android:id="@+id/fadeInResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/fadeInResource_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_launcher"/>
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
 
 
@@ -172,78 +192,112 @@
                 android:id="@+id/slideLeftResource_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fadeInResource_ll"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SLIDE-LEFT"/>
+                    android:text="SLIDE-LEFT"
+                    />
 
                 <Button
                     android:id="@+id/slideLeftResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/slideLeftResource_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_launcher"/>
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/slideRightResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SLIDE-RIGHT"
+                    />
+
+                <Button
+                    android:id="@+id/slideRightResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/slideRightResource_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/fadeOutResource_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/slideLeftResource_ll"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FADE-OUT"/>
+                    android:text="FADE-OUT"
+                    />
 
                 <Button
                     android:id="@+id/fadeOutResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/fadeOutResource_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_launcher"/>
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/scaleResource_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fadeOutResource_ll"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/scaleResourceButton"
-                    android:text="SCALE"/>
+                    android:text="SCALE"
+                    />
 
                 <Button
                     android:id="@+id/scaleResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
 
                 <ImageView
                     android:id="@+id/scaleResource_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_launcher"/>
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

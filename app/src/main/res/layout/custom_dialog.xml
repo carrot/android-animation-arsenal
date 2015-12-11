@@ -2,18 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/colorAccent"
               android:orientation="vertical"
-              android:background="@color/colorPrimary"
               android:paddingTop="20dp">
 
 
     <LinearLayout
         android:layout_width="200dp"
-        android:layout_height="200dp"> <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="hello world"
-        android:textStyle="bold"/></LinearLayout>
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="hello world"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Cancel"
+            />
+
+    </LinearLayout>
 </LinearLayout>

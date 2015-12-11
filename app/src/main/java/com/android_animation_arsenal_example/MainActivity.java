@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android_animation_arsenal.AnimationArsenal;
@@ -29,7 +30,8 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.fadeOutResource_iv) ImageView mImageViewFadeOut;
     @Bind(R.id.scaleResource_iv) ImageView mImageViewScale;
     @Bind(R.id.slideLeftResource_iv) ImageView mImageViewSlideLeft;
-//    @Bind(R.id.mySheetLayout) SheetLayout mSheetLayout;
+    @Bind(R.id.slideRightResource_iv) ImageView mImageViewSlideRight;
+    @Bind(R.id.fab) FloatingActionButton mFloatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,46 +41,12 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                RevealDialog dialog = new RevealDialog(MainActivity.this);
-                dialog.requestWindowFeature((int) Window.FEATURE_NO_TITLE);
-                final View layout = View.inflate(getApplicationContext(), R.layout.custom_dialog,
-                        null);
-                dialog.setContentView(layout);
-                dialog.setTarget(fab);
-                dialog.setRevealDuration(700);
-                dialog.show();
-
-
-//                mSheetLayout.expandFab();
-            }
-        });
-//        mSheetLayout.setFabAnimationEndListener(new SheetLayout.OnFabAnimationEndListener()
-//        {
-//            @Override
-//            public void onFabAnimationEnd()
-//            {
-//                Toast.makeText(getApplicationContext(), "animation end", Toast.LENGTH_SHORT)
-// .show();
-//                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
     @OnClick({R.id.circularRevealButton, R.id.specificResourceButton, R.id.fadeInResourceButton,
             R.id.fadeOutResourceButton, R.id.scaleResourceButton, R.id.slideLeftResourceButton,
-            R.id.enterTransitionButton, R.id.exitTransitionButton})
+            R.id.slideRightResourceButton, R.id.enterTransitionButton, R.id.exitTransitionButton,
+            R.id.fab})
     public void onClick(View view)
     {
         switch(view.getId())
@@ -211,6 +179,52 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.exitTransitionButton:
 
+                break;
+
+            case R.id.fab:
+                final RevealDialog dialog = new RevealDialog(MainActivity.this);
+                dialog.requestWindowFeature((int) Window.FEATURE_NO_TITLE);
+                final View layout = View.inflate(getApplicationContext(), R.layout.custom_dialog,
+                        null);
+                dialog.setContentView(layout);
+                dialog.setRevealDuration(500);
+                dialog.setTarget(mFloatingActionButton);
+                Button btn = (Button) layout.findViewById(R.id.button);
+                btn.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialog.contractDialogWithTarget();
+                    }
+                });
+                dialog.show();
+                break;
+
+            case R.id.slideRightResourceButton:
+                AnimationArsenal.playAnimationSlideRight(getApplicationContext(),
+                        mImageViewSlideRight,
+                        700, new Animation.AnimationListener()
+
+                        {
+                            @Override
+                            public void onAnimationStart(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation)
+                            {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation)
+                            {
+
+                            }
+                        });
                 break;
 
         }

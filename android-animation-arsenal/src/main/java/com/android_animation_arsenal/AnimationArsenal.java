@@ -314,7 +314,7 @@ public class AnimationArsenal
     public static Animation playAnimationSlideLeft(Context context, View view, int duration,
                                                    Animation.AnimationListener animationListener)
     {
-        return animate(context, view, android.R.anim.fade_in, duration, animationListener);
+        return animate(context, view, android.R.anim.slide_in_left, duration, animationListener);
     }
 
     /**

@@ -10,11 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -23,24 +23,28 @@ import android.view.animation.DecelerateInterpolator;
  */
 public class RevealDialog extends Dialog
 {
+
+    private int duration = 500;
+    private View contentView;
+    private View targetView;
+    private boolean hasTarget;
+    private boolean isReveal;
+    private boolean isAnimating;
+
     public RevealDialog(Context context)
     {
         super(context);
-    }
-
-    @Override
-    public void setOnShowListener(OnShowListener listener)
-    {
-        super.setOnShowListener(listener);
-
-
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        hasTarget = false;
+        isAnimating = false;
+        isReveal = false;
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
+        if(event.getAction() == MotionEvent.ACTION_DOWN && ! isAnimating)
         {
             if(hasTarget)
             {
@@ -50,6 +54,7 @@ public class RevealDialog extends Dialog
             {
                 contractDialog();
             }
+            isAnimating = true;
             return true;
         }
         return super.onTouchEvent(event);
@@ -59,7 +64,7 @@ public class RevealDialog extends Dialog
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if(keyCode == KeyEvent.KEYCODE_BACK)
+        if(keyCode == KeyEvent.KEYCODE_BACK && ! isAnimating)
         {
             if(hasTarget)
             {
@@ -69,19 +74,20 @@ public class RevealDialog extends Dialog
             {
                 contractDialog();
             }
+            isAnimating = true;
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-
-    public static int duration;
-
-    public static void setRevealDuration(int value)
+    public void setRevealDuration(int value)
     {
         duration = value;
     }
 
+    /**
+     * Reverse reveal dialog
+     */
     public void contractDialog()
     {
         int x = contentView.getWidth() / 2;
@@ -96,7 +102,10 @@ public class RevealDialog extends Dialog
         toolbarExpandAnim.setDuration(duration);
     }
 
-    public static void setTarget(View view)
+    /**
+     * Sets target for animation with dialog
+     */
+    public void setTarget(View view)
     {
         targetView = view;
         hasTarget = true;
@@ -107,6 +116,11 @@ public class RevealDialog extends Dialog
     {
         if(! isReveal)
         {
+            if(hasTarget)
+            {
+                targetView.setEnabled(true);
+                targetView.setClickable(false);
+            }
             getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
                     .TRANSPARENT));
             setOnShowListener(new OnShowListener()
@@ -127,10 +141,12 @@ public class RevealDialog extends Dialog
             });
         }
         super.show();
-
     }
 
-    private void revealDialog()
+    /**
+     * Reveals dialog without target
+     */
+    public void revealDialog()
     {
         int x = contentView.getWidth() / 2;
         int y = contentView.getHeight() / 2;
@@ -143,10 +159,6 @@ public class RevealDialog extends Dialog
         toolbarExpandAnim.setStartDelay(duration);
         toolbarExpandAnim.setDuration(duration);
     }
-
-    private static View contentView;
-    private static View targetView;
-    private static boolean hasTarget = false;
 
     @Override
     public void setContentView(View view)
@@ -163,116 +175,172 @@ public class RevealDialog extends Dialog
         });
     }
 
+    /**
+     * Animates dialog into a reveal and handles
+     * target animation from its original position to dialog position
+     */
     public void revealDialogWithTarget()
     {
-        // do something when your dialog is being shown
+        if(isAnimating)
+        {
+            return;
+        }
+
+        isAnimating = true;
+
+        // get display metrics
         DisplayMetrics metrics = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        // center of dialog
-        int x = contentView.getWidth() / 2;
-        int y = contentView.getHeight() / 2;
 
+        // get center coordinates of dialog
+        final int x = contentView.getWidth() / 2;
+        final int y = contentView.getHeight() / 2;
+
+        // disable targetView
+        targetView.setEnabled(false);
+        targetView.setClickable(false);
+
+        // change alpha of contentView and visibility
         contentView.setAlpha(0f);
         contentView.setVisibility(View.VISIBLE);
 
-        Animator fabSlideXAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
-                PropertyValuesHolder.ofFloat("translationX", 0f, - (metrics.xdpi)));
-        fabSlideXAnim.setDuration(duration);
+        // get original position of targetView
+        final int originalPos[] = new int[2];
+        targetView.getLocationOnScreen(originalPos);
 
-        Animator fabSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
-                PropertyValuesHolder.ofFloat("translationY", 0f, - (metrics.ydpi * 2)));
-        fabSlideYAnim.setDuration(duration);
-        Log.d("x, y", "" + metrics.xdpi + ", " + metrics.heightPixels);
+        // set x and y destination for targetView
+        final int xDest = (metrics.widthPixels / 2) - (targetView.getMeasuredWidth() / 2);
+        final int yDest = (metrics.heightPixels / 2) - (targetView.getMeasuredHeight() / 2);
+
+        // animate targetView Button x transition
+        Animator targetSlideXAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
+                PropertyValuesHolder.ofFloat("translationX", 0f, xDest -
+                        originalPos[0]));
+        targetSlideXAnim.setDuration(duration);
+
+        // animate targetView y transition
+        Animator targetSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
+                PropertyValuesHolder.ofFloat("translationY", 0f, yDest -
+                        originalPos[1]));
+        targetSlideYAnim.setDuration(duration);
 
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         // big radius to cover view
         int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics
                 .heightPixels);
-        Animator toolbarExpandAnim = ViewAnimationUtils.createCircularReveal(
+
+        // animate contentView reveal
+        Animator dialogRevealAnim = ViewAnimationUtils.createCircularReveal(
                 contentView, x, y, 0, bigRadius);
-        toolbarExpandAnim.setStartDelay(duration);
-        toolbarExpandAnim.setDuration(duration);
+        dialogRevealAnim.setStartDelay(duration);
+        dialogRevealAnim.setDuration(duration);
 
-        // Play All animations together. Interpolators must be added after playTogether()
-        // or the won't be used.
+        // play All animations together. Interpolators must be added after playTogether()
         AnimatorSet animSet = new AnimatorSet();
-        animSet.playTogether(fabSlideXAnim, fabSlideYAnim, toolbarExpandAnim);
-        fabSlideXAnim.setInterpolator(new AccelerateInterpolator(1.0f));
-        fabSlideYAnim.setInterpolator(new DecelerateInterpolator(0.8f));
+        animSet.playTogether(targetSlideXAnim, targetSlideYAnim, dialogRevealAnim);
+        targetSlideXAnim.setInterpolator(new AccelerateInterpolator(1.0f));
+        targetSlideYAnim.setInterpolator(new DecelerateInterpolator(0.8f));
 
-        fabSlideYAnim.addListener(new AnimatorListenerAdapter()
-        {
-            @Override
-            public void onAnimationEnd(Animator animation)
-            {
-                super.onAnimationEnd(animation);
-                targetView.setVisibility(View.INVISIBLE);
-                targetView.setTranslationX(0f);
-                targetView.setTranslationY(0f);
-                targetView.setAlpha(1f);
-            }
-        });
-
-        toolbarExpandAnim.addListener(new AnimatorListenerAdapter()
+        dialogRevealAnim.addListener(new AnimatorListenerAdapter()
         {
             @Override
             public void onAnimationStart(Animator animation)
             {
                 super.onAnimationStart(animation);
+
+                targetView.setVisibility(View.INVISIBLE);
+                targetView.setTranslationX(0f);
+                targetView.setTranslationY(0f);
+                targetView.setAlpha(1f);
                 contentView.setAlpha(1f);
+
+                // set targetView back to default
+                targetView.setEnabled(true);
+                targetView.setClickable(true);
+
                 isReveal = true;
+                isAnimating = false;
                 show();
             }
-
         });
         animSet.start();
     }
 
-    boolean isReveal = false;
+    /**
+     * Gets target location on screen
+     *
+     * @return lcoation on screen
+     */
+    private int[] getTargetLocation()
+    {
+        int[] originalPos = new int[2];
+        targetView.getLocationOnScreen(originalPos);
+        return originalPos;
+    }
 
-
+    /**
+     * Animates dialog into a reverse reveal and handles
+     * target animation to its original position
+     */
     public void contractDialogWithTarget()
     {
-        // do something when your dialog is being shown
+        if(isAnimating)
+        {
+            return;
+        }
+
+        isAnimating = true;
+
+        // get display metrics
         DisplayMetrics metrics = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        // Center point on the screen of the FAB after translation. Used as the start point
-        // for the expansion animation of the toolbar.
-        int x = contentView.getWidth() / 2;
-        int y = contentView.getHeight() / 2;
+        // get center coordinates of contentView
+        final int x = contentView.getWidth() / 2;
+        final int y = contentView.getHeight() / 2;
 
+        // get original position of targetView
+        final int originalPos[] = getTargetLocation();
+
+        // set x and y destination for targetView
+        final int xDest = (metrics.widthPixels / 2) - (targetView.getMeasuredWidth() / 2);
+        final int yDest = (metrics.heightPixels / 2) - (targetView.getMeasuredHeight() / 2);
+
+        // disable targetView
+        targetView.setEnabled(false);
+        targetView.setClickable(false);
+
+        // change alpha of targetView and visibility
         targetView.setAlpha(0f);
         targetView.setVisibility(View.VISIBLE);
 
+        // animate targetView x transition
         Animator fabSlideXAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
-                PropertyValuesHolder.ofFloat("translationX", - (metrics.xdpi), 0f));
+                PropertyValuesHolder.ofFloat("translationX", xDest - originalPos[0], 0f));
         fabSlideXAnim.setStartDelay(duration);
         fabSlideXAnim.setDuration(duration);
 
+        // animate targetView y transition
         Animator fabSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(targetView,
-                PropertyValuesHolder.ofFloat("translationY", - (metrics.ydpi * 2), 0f));
+                PropertyValuesHolder.ofFloat("translationY", yDest - originalPos[1], 0f));
         fabSlideYAnim.setStartDelay(duration);
         fabSlideYAnim.setDuration(duration);
 
-        Log.d("x, y", "" + metrics.xdpi + ", " + metrics.heightPixels);
+        // big radius for the contentView
+        int bigRadius = Math.max(metrics.widthPixels, metrics.heightPixels);
 
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        // big radius to cover
-        int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics
-                .heightPixels);
-        Animator toolbarContractAnim = ViewAnimationUtils.createCircularReveal(
+        // animate contentView reverse reveal
+        Animator dialogContractRevealAnim = ViewAnimationUtils.createCircularReveal(
                 contentView, x, y, bigRadius, 0);
-        toolbarContractAnim.setDuration(duration);
+        dialogContractRevealAnim.setDuration(duration);
 
-        // Play All animations together. Interpolators must be added after playTogether()
-        // or the won't be used.
+        // play All animations together. Interpolators must be added after playTogether()
         AnimatorSet animSet = new AnimatorSet();
-        animSet.playTogether(toolbarContractAnim, fabSlideXAnim, fabSlideYAnim);
+        animSet.playTogether(dialogContractRevealAnim, fabSlideXAnim, fabSlideYAnim);
         fabSlideXAnim.setInterpolator(new DecelerateInterpolator(0.8f));
         fabSlideYAnim.setInterpolator(new AccelerateInterpolator(1.0f));
 
-        toolbarContractAnim.addListener(new AnimatorListenerAdapter()
+        dialogContractRevealAnim.addListener(new AnimatorListenerAdapter()
         {
             @Override
             public void onAnimationEnd(Animator animation)
@@ -292,10 +360,14 @@ public class RevealDialog extends Dialog
                 super.onAnimationEnd(animation);
                 contentView.setVisibility(View.INVISIBLE);
                 contentView.setAlpha(1f);
+                isAnimating = false;
+
+                // enable targetView
+                targetView.setEnabled(true);
+                targetView.setClickable(true);
             }
         });
         animSet.start();
     }
-
 }
 

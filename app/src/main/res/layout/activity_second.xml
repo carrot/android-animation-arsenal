@@ -24,12 +24,4 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_second"/>
-
-    <com.android_animation_arsenal.views.SheetLayout
-        android:id="@+id/mySheetLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:ft_color="@color/colorPrimary"
-        app:ft_container_gravity="center"
-        />
 </android.support.design.widget.CoordinatorLayout>
