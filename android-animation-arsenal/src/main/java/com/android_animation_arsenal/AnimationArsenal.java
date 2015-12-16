@@ -32,7 +32,7 @@ public class AnimationArsenal
      *
      * @param listener transition listener
      * @param duration duration for transition
-     * @return returns explode transition - could be null
+     * @return returns explode transition (null if API level 14 is less than LOLLIPOP)
      */
     public static Transition getExplodeTransition(Transition.TransitionListener listener, int
             duration)
@@ -53,7 +53,7 @@ public class AnimationArsenal
      * @param listener transition listener
      * @param duration duration for transition
      * @param gravity  direction of slide transition
-     * @return returns slide transition - could be null
+     * @return returns slide transition (null if API level 14 is less than LOLLIPOP)
      */
     public static Transition getSlideTransition(Transition.TransitionListener listener, int
             duration, int gravity)
@@ -166,7 +166,7 @@ public class AnimationArsenal
      *
      * @param listener transition listener
      * @param fadeMode The behavior of this transition: Fade.IN or Fade.OUT
-     * @return returns explode transition - could be null
+     * @return returns explode transition (null if API level 14 is less than LOLLIPOP)
      */
     public static Transition getFadeTransition(Transition.TransitionListener listener, int fadeMode)
     {
@@ -183,7 +183,7 @@ public class AnimationArsenal
     /**
      * explode animation moving view to specific sides using 'Slide Transition'
      *
-     * @return returns transition - could be null
+     * @return returns transition (null if API level 14 is less than LOLLIPOP)
      */
     public static Transition getSlideExplosionTransition(int duration,
                                                          View topViewContainer,
