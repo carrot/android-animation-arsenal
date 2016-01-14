@@ -113,7 +113,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/circularReveal_iv"
+                    android:id="@+id/circularReveal_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -151,7 +151,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/specificResource_iv"
+                    android:id="@+id/specificResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -180,7 +180,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/fadeInResource_iv"
+                    android:id="@+id/fadeInResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -209,7 +209,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/slideLeftResource_iv"
+                    android:id="@+id/slideLeftResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -237,7 +237,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/slideRightResource_iv"
+                    android:id="@+id/slideRightResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -265,7 +265,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/fadeOutResource_iv"
+                    android:id="@+id/fadeOutResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"
@@ -293,7 +293,7 @@
                     />
 
                 <ImageView
-                    android:id="@+id/scaleResource_iv"
+                    android:id="@+id/scaleResource_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_launcher"

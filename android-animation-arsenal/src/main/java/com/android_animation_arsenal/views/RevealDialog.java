@@ -27,18 +27,16 @@ public class RevealDialog extends Dialog
     private int duration = 500;
     private View mContentView;
     private View mTargetView;
-    private boolean hasTarget;
-    private boolean isReveal;
-    private boolean isAnimating;
+    private boolean mIsReveal;
+    private boolean mIsAnimating;
     private DisplayMetrics mDisplayMetrics;
 
     public RevealDialog(Context context)
     {
         super(context);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        hasTarget = false;
-        isAnimating = false;
-        isReveal = false;
+        mIsAnimating = false;
+        mIsReveal = false;
         mDisplayMetrics = getDisplayMetrics();
     }
 
@@ -46,9 +44,9 @@ public class RevealDialog extends Dialog
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        if(event.getAction() == MotionEvent.ACTION_DOWN && ! isAnimating)
+        if(event.getAction() == MotionEvent.ACTION_DOWN && ! mIsAnimating)
         {
-            if(hasTarget)
+            if(hasTarget())
             {
                 contractDialogWithTarget();
             }
@@ -56,7 +54,7 @@ public class RevealDialog extends Dialog
             {
                 contractDialog();
             }
-            isAnimating = true;
+            mIsAnimating = true;
             return true;
         }
         return super.onTouchEvent(event);
@@ -66,9 +64,9 @@ public class RevealDialog extends Dialog
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if(keyCode == KeyEvent.KEYCODE_BACK && ! isAnimating)
+        if(keyCode == KeyEvent.KEYCODE_BACK && ! mIsAnimating)
         {
-            if(hasTarget)
+            if(hasTarget())
             {
                 contractDialogWithTarget();
             }
@@ -76,7 +74,7 @@ public class RevealDialog extends Dialog
             {
                 contractDialog();
             }
-            isAnimating = true;
+            mIsAnimating = true;
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -110,15 +108,14 @@ public class RevealDialog extends Dialog
     public void setTarget(View view)
     {
         mTargetView = view;
-        hasTarget = true;
     }
 
     @Override
     public void show()
     {
-        if(! isReveal)
+        if(! mIsReveal)
         {
-            if(hasTarget)
+            if(hasTarget())
             {
                 mTargetView.setEnabled(true);
                 mTargetView.setClickable(false);
@@ -130,7 +127,7 @@ public class RevealDialog extends Dialog
                 @Override
                 public void onShow(DialogInterface sdialog)
                 {
-                    if(hasTarget)
+                    if(hasTarget())
                     {
                         hide();
                         revealDialogWithTarget();
@@ -183,12 +180,12 @@ public class RevealDialog extends Dialog
      */
     public void revealDialogWithTarget()
     {
-        if(isAnimating)
+        if(mIsAnimating)
         {
             return;
         }
 
-        isAnimating = true;
+        mIsAnimating = true;
 
         // disable mTargetView
         mTargetView.setEnabled(false);
@@ -246,8 +243,8 @@ public class RevealDialog extends Dialog
                 mTargetView.setEnabled(true);
                 mTargetView.setClickable(true);
 
-                isReveal = true;
-                isAnimating = false;
+                mIsReveal = true;
+                mIsAnimating = false;
                 show();
             }
         });
@@ -312,12 +309,12 @@ public class RevealDialog extends Dialog
      */
     public void contractDialogWithTarget()
     {
-        if(isAnimating)
+        if(mIsAnimating)
         {
             return;
         }
 
-        isAnimating = true;
+        mIsAnimating = true;
 
         // get original position of mTargetView
         final int originalPos[] = getTargetLocation();
@@ -378,7 +375,7 @@ public class RevealDialog extends Dialog
                 super.onAnimationEnd(animation);
                 mContentView.setVisibility(View.INVISIBLE);
                 mContentView.setAlpha(1f);
-                isAnimating = false;
+                mIsAnimating = false;
 
                 // enable mTargetView
                 mTargetView.setEnabled(true);
@@ -398,6 +395,15 @@ public class RevealDialog extends Dialog
         DisplayMetrics metrics = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics;
+    }
+
+    private boolean hasTarget()
+    {
+        if(mTargetView != null)
+        {
+            return true;
+        }
+        return false;
     }
 }
 

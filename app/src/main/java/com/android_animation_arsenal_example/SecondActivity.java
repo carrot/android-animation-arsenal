@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class SecondActivity extends AppCompatActivity
 {
 
-    @Bind(R.id.reveal_iv) ImageView mImageView;
+    @Bind(R.id.reveal_image) ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

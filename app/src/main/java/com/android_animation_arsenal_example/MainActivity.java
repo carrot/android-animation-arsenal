@@ -24,13 +24,13 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
 {
-    @Bind(R.id.circularReveal_iv) ImageView mImageViewReveal;
-    @Bind(R.id.specificResource_iv) ImageView mImageViewSpecified;
-    @Bind(R.id.fadeInResource_iv) ImageView mImageViewFadeIn;
-    @Bind(R.id.fadeOutResource_iv) ImageView mImageViewFadeOut;
-    @Bind(R.id.scaleResource_iv) ImageView mImageViewScale;
-    @Bind(R.id.slideLeftResource_iv) ImageView mImageViewSlideLeft;
-    @Bind(R.id.slideRightResource_iv) ImageView mImageViewSlideRight;
+    @Bind(R.id.circularReveal_image) ImageView mImageViewReveal;
+    @Bind(R.id.specificResource_image) ImageView mImageViewSpecified;
+    @Bind(R.id.fadeInResource_image) ImageView mImageViewFadeIn;
+    @Bind(R.id.fadeOutResource_image) ImageView mImageViewFadeOut;
+    @Bind(R.id.scaleResource_image) ImageView mImageViewScale;
+    @Bind(R.id.slideLeftResource_image) ImageView mImageViewSlideLeft;
+    @Bind(R.id.slideRightResource_image) ImageView mImageViewSlideRight;
     @Bind(R.id.fab) FloatingActionButton mFloatingActionButton;
 
     @Override
