@@ -38,11 +38,13 @@ public class SecondActivity extends AppCompatActivity
 
     public void initAnimations()
     {
-        AnimationArsenal.setEnterTransition(getWindow(), AnimationArsenal
+        boolean hasAnimated = AnimationArsenal.setEnterTransition(getWindow(), AnimationArsenal
                 .getFadeTransition(new Transition.TransitionListener()
                 {
                     @Override
-                    public void onTransitionStart(Transition transition) {}
+                    public void onTransitionStart(Transition transition)
+                    {
+                    }
 
                     @Override
                     public void onTransitionEnd(Transition transition)
@@ -52,31 +54,52 @@ public class SecondActivity extends AppCompatActivity
                     }
 
                     @Override
-                    public void onTransitionCancel(Transition transition) {}
+                    public void onTransitionCancel(Transition transition)
+                    {
+                    }
 
                     @Override
-                    public void onTransitionPause(Transition transition) {}
+                    public void onTransitionPause(Transition transition)
+                    {
+                    }
 
                     @Override
-                    public void onTransitionResume(Transition transition) {}
+                    public void onTransitionResume(Transition transition)
+                    {
+                    }
                 }, Fade.MODE_IN));
+
+        if(! hasAnimated)
+        {
+            mImageView.setVisibility(View.VISIBLE);
+        }
 
         AnimationArsenal.setExitTransition(getWindow(), AnimationArsenal.getFadeTransition(new Transition.TransitionListener()
         {
             @Override
-            public void onTransitionStart(Transition transition) {}
+            public void onTransitionStart(Transition transition)
+            {
+            }
 
             @Override
-            public void onTransitionEnd(Transition transition) {}
+            public void onTransitionEnd(Transition transition)
+            {
+            }
 
             @Override
-            public void onTransitionCancel(Transition transition) {}
+            public void onTransitionCancel(Transition transition)
+            {
+            }
 
             @Override
-            public void onTransitionPause(Transition transition) {}
+            public void onTransitionPause(Transition transition)
+            {
+            }
 
             @Override
-            public void onTransitionResume(Transition transition) {}
+            public void onTransitionResume(Transition transition)
+            {
+            }
         }, Fade.MODE_OUT));
         getWindow().setReturnTransition(AnimationArsenal.getFadeTransition(null, Fade.MODE_OUT));
     }
