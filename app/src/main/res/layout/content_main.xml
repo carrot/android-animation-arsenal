@@ -12,202 +12,293 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Window Transitons"
-            android:textStyle="bold"/>
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            >
 
             <LinearLayout
-                android:id="@+id/enterTransition_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Window Transitons"
+                    android:textStyle="bold"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/enterTransition_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter with Fade"
+                        />
+
+                    <Button
+                        android:id="@+id/enterTransitionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Play"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/exitTransition_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/enterTransition_ll"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Exit with Slide"
+                        />
+
+                    <Button
+                        android:id="@+id/exitTransitionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Play"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/circularReveal_ll"
+                android:text="Reveal"
+                android:textStyle="bold"
+                />
+
+            <LinearLayout
+                android:id="@+id/circularReveal_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter with Fade"/>
+                    android:text="Circular Reveal"
+                    />
 
                 <Button
-                    android:id="@+id/enterTransitionButton"
+                    android:id="@+id/circularRevealButton"
                     android:layout_width="wrap_content"
-                    android:padding="5dp"
                     android:layout_height="wrap_content"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/circularReveal_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    android:visibility="invisible"
+                    />
+
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/exitTransition_ll"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/enterTransition_ll"
-                android:orientation="horizontal">
+                android:text="Resource Animations"
+                android:textStyle="bold"
+                />
+
+            <LinearLayout
+                android:id="@+id/specificResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Exit with Slide"/>
+                    android:text="SPECIFIC"
+                    />
 
                 <Button
-                    android:id="@+id/exitTransitionButton"
+                    android:id="@+id/specificResourceButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Go"/>
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/specificResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/fadeInResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FADE-IN"
+                    />
+
+                <Button
+                    android:id="@+id/fadeInResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/fadeInResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/slideLeftResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SLIDE-LEFT"
+                    />
+
+                <Button
+                    android:id="@+id/slideLeftResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/slideLeftResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/slideRightResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SLIDE-RIGHT"
+                    />
+
+                <Button
+                    android:id="@+id/slideRightResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/slideRightResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fadeOutResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FADE-OUT"
+                    />
+
+                <Button
+                    android:id="@+id/fadeOutResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/fadeOutResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/scaleResource_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SCALE"
+                    />
+
+                <Button
+                    android:id="@+id/scaleResourceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    />
+
+                <ImageView
+                    android:id="@+id/scaleResource_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_launcher"
+                    />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reveal"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:id="@+id/circularReveal_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Circular Reveal"/>
-
-        <Button
-            android:id="@+id/circularRevealButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Animation From Resource"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:id="@+id/specificResource_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/exitTransition_ll"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/specificResourceButton"
-            android:text="SPECIFIC from Resource"/>
-
-        <Button
-            android:id="@+id/specificResourceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/fadeInResource_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/specificResource_ll"
-        android:orientation="horizontal">
-
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FADE-IN from Android Resource"/>
-
-        <Button
-            android:id="@+id/fadeInResourceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/slideLeftResource_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fadeInResource_ll"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SLIDE-LEFT from Android Resource"/>
-
-        <Button
-            android:id="@+id/slideLeftResourceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/fadeOutResource_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/slideLeftResource_ll"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FADE-OUT from Android Resource"/>
-
-        <Button
-            android:id="@+id/fadeOutResourceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/scaleResource_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fadeOutResource_ll"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/scaleResourceButton"
-            android:text="SCALE from Android Resource"/>
-
-        <Button
-            android:id="@+id/scaleResourceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"/>
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>
