@@ -1,10 +1,12 @@
 package com.android_animation_arsenal_example;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.transition.Transition;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ public class SecondActivity extends AppCompatActivity
 {
 
     @Bind(R.id.reveal_image) ImageView mImageView;
+    String TRANSITION_TYPE = "TRANSITION_TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,41 +31,97 @@ public class SecondActivity extends AppCompatActivity
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        initAnimations();
+        if(savedInstanceState == null)
+        {
+            Intent intent = getIntent();
+            initAnimations((int) intent.getSerializableExtra(TRANSITION_TYPE));
+        }
+        else
+        {
+
+        }
     }
 
-    public void initAnimations()
+    public void initAnimations(int type)
     {
-        boolean hasAnimated = AnimationArsenal.setEnterTransition(getWindow(), AnimationArsenal
-                .getFadeTransition(new Transition.TransitionListener()
-                {
-                    @Override
-                    public void onTransitionStart(Transition transition)
-                    {
-                    }
+        boolean hasAnimated;
+        switch(type)
+        {
+            // fade
+            case 0:
+                hasAnimated = AnimationArsenal.setEnterTransition(getWindow(),
+                        AnimationArsenal
+                                .getFadeTransition(new Transition.TransitionListener()
+                                {
+                                    @Override
+                                    public void onTransitionStart(Transition transition)
+                                    {
+                                    }
 
-                    @Override
-                    public void onTransitionEnd(Transition transition)
-                    {
-                        AnimationArsenal.circularReveal(mImageView, getApplicationContext(), 700,
-                                AnimationArsenal.RevealGravity.CENTER, AnimationArsenal.RevealMode.SHOW);
-                    }
+                                    @Override
+                                    public void onTransitionEnd(Transition transition)
+                                    {
+                                        AnimationArsenal.circularReveal(mImageView,
+                                                getApplicationContext(), 700,
+                                                AnimationArsenal.RevealGravity.CENTER, AnimationArsenal.RevealMode.SHOW);
+                                    }
 
-                    @Override
-                    public void onTransitionCancel(Transition transition)
-                    {
-                    }
+                                    @Override
+                                    public void onTransitionCancel(Transition transition)
+                                    {
+                                    }
 
-                    @Override
-                    public void onTransitionPause(Transition transition)
-                    {
-                    }
+                                    @Override
+                                    public void onTransitionPause(Transition transition)
+                                    {
+                                    }
 
-                    @Override
-                    public void onTransitionResume(Transition transition)
-                    {
-                    }
-                },700, Fade.MODE_IN));
+                                    @Override
+                                    public void onTransitionResume(Transition transition)
+                                    {
+                                    }
+                                }, 700, Fade.MODE_IN));
+                break;
+            // slide
+            case 1:
+                hasAnimated = AnimationArsenal.setEnterTransition(getWindow(),
+                        AnimationArsenal
+                                .getSlideTransition(new Transition.TransitionListener()
+                                {
+                                    @Override
+                                    public void onTransitionStart(Transition transition)
+                                    {
+                                    }
+
+                                    @Override
+                                    public void onTransitionEnd(Transition transition)
+                                    {
+                                        AnimationArsenal.circularReveal(mImageView,
+                                                getApplicationContext(), 700,
+                                                AnimationArsenal.RevealGravity.CENTER, AnimationArsenal.RevealMode.SHOW);
+                                    }
+
+                                    @Override
+                                    public void onTransitionCancel(Transition transition)
+                                    {
+                                    }
+
+                                    @Override
+                                    public void onTransitionPause(Transition transition)
+                                    {
+                                    }
+
+                                    @Override
+                                    public void onTransitionResume(Transition transition)
+                                    {
+                                    }
+                                }, 1000, Gravity.LEFT));
+                break;
+
+            default:
+                hasAnimated = false;
+                break;
+        }
 
         if(! hasAnimated)
         {
