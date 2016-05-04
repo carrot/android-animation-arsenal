@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.slideRightResource_image) ImageView mImageViewSlideRight;
     @Bind(R.id.fab) FloatingActionButton mFloatingActionButton;
 
+    String TRANSITION_TYPE = "TRANSITION_TYPE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity
             R.id.fab})
     public void onClick(View view)
     {
+        Intent intent;
+        ActivityOptions options;
         switch(view.getId())
         {
             case R.id.circularRevealButton:
@@ -173,12 +177,16 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.enterTransitionButton:
-                Intent intent = new Intent(this, SecondActivity.class);
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
+                intent = new Intent(this, SecondActivity.class);
+                intent.putExtra(this.TRANSITION_TYPE, 0);
+                options = ActivityOptions.makeSceneTransitionAnimation(this);
                 ActivityCompat.startActivity(this, intent, options.toBundle());
                 break;
             case R.id.exitTransitionButton:
-
+                intent = new Intent(this, SecondActivity.class);
+                intent.putExtra(this.TRANSITION_TYPE, 1);
+                options = ActivityOptions.makeSceneTransitionAnimation(this);
+                ActivityCompat.startActivity(this, intent, options.toBundle());
                 break;
 
             case R.id.fab:
