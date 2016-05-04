@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.circularRevealButton:
                 AnimationArsenal.circularReveal(mImageViewReveal, getApplicationContext(), 2000,
-                        AnimationArsenal.RevealGravity.CENTER);
+                        AnimationArsenal.RevealGravity.CENTER, AnimationArsenal.RevealMode.SHOW);
                 break;
             case R.id.specificResourceButton:
                 AnimationArsenal.playAnimationFromResource(getApplicationContext(),
