@@ -81,6 +81,15 @@ public class AnimationArsenal
     }
 
     /**
+     * Enum for Showing or Hiding Reveal
+     */
+    public enum RevealMode
+    {
+        SHOW,
+        HIDE
+    }
+
+    /**
      * starts Circular Reveal transition
      *
      * @param view    view for circular reveal transition
@@ -88,7 +97,7 @@ public class AnimationArsenal
      * @param gravity position where the reveal starts
      */
     public static void circularReveal(final View view, Context context, int duration,
-                                      RevealGravity gravity)
+                                      RevealGravity gravity, RevealMode mode)
     {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         {
@@ -121,14 +130,21 @@ public class AnimationArsenal
                 break;
         }
 
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        // big radius to cover view
-        int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics
-                .heightPixels);
 
         // initialize animator with circular reveal
-        final Animator animatorReveal = ViewAnimationUtils.createCircularReveal
-                (view, x, y, 0, bigRadius);
+        final Animator animatorReveal;
+        if(mode == RevealMode.SHOW) {
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            // big radius to cover view
+            int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics
+                    .heightPixels);
+            animatorReveal = ViewAnimationUtils.createCircularReveal
+                    (view, x, y, 0, bigRadius);
+        } else {
+            int initialRadius = view.getWidth() / 2;
+            animatorReveal = ViewAnimationUtils.createCircularReveal
+                    (view, x, y, initialRadius, 0);
+        }
 
         animatorReveal.setDuration(duration);
 
@@ -168,11 +184,12 @@ public class AnimationArsenal
      * @param fadeMode The behavior of this transition: Fade.IN or Fade.OUT
      * @return returns explode transition (null if API level 14 is less than LOLLIPOP)
      */
-    public static Transition getFadeTransition(Transition.TransitionListener listener, int fadeMode)
+    public static Transition getFadeTransition(Transition.TransitionListener listener, int duration, int fadeMode)
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
             Fade fade = new Fade(fadeMode);
+            fade.setDuration(duration);
             fade.addListener(listener);
             return fade;
         }
@@ -243,7 +260,7 @@ public class AnimationArsenal
      * @return boolean (true if transition is available, false if not)
      */
 
-    public static boolean setExitTransition(Window window, Transition transition)
+    public static boolean setReturnTransition(Window window, Transition transition)
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
@@ -251,7 +268,7 @@ public class AnimationArsenal
             {
                 return false;
             }
-            window.setExitTransition(transition);
+            window.setReturnTransition(transition);
             return true;
         }
         return false;
