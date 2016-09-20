@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -17,6 +18,8 @@ import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+
+import com.android_animation_arsenal.AnimationArsenal;
 
 /**
  * Created by angelsolis on 12/9/15.
@@ -28,8 +31,9 @@ public class RevealDialog extends Dialog
     private View mContentView;
     private View mTargetView;
     private boolean mIsReveal;
-    private boolean mIsAnimating;
+    private boolean mIsAnimating = false;
     private DisplayMetrics mDisplayMetrics;
+    private boolean mIsCancelable = true;
 
     public RevealDialog(Context context)
     {
@@ -48,6 +52,8 @@ public class RevealDialog extends Dialog
         {
             if(hasTarget())
             {
+                mContentView.setClickable(false);
+                setCancelable(false);
                 contractDialogWithTarget();
             }
             else
@@ -68,6 +74,7 @@ public class RevealDialog extends Dialog
         {
             if(hasTarget())
             {
+                mContentView.setClickable(false);
                 contractDialogWithTarget();
             }
             else
@@ -113,33 +120,35 @@ public class RevealDialog extends Dialog
     @Override
     public void show()
     {
-        if(! mIsReveal)
+        if(hasTarget())
         {
-            if(hasTarget())
-            {
-                mTargetView.setEnabled(true);
-                mTargetView.setClickable(false);
-            }
-            getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
-                    .TRANSPARENT));
-            setOnShowListener(new OnShowListener()
-            {
-                @Override
-                public void onShow(DialogInterface sdialog)
-                {
-                    if(hasTarget())
-                    {
-                        hide();
-                        revealDialogWithTarget();
-                    }
-                    else
-                    {
-                        revealDialog();
-                    }
-                }
-            });
+            mTargetView.setEnabled(true);
+            mTargetView.setClickable(false);
         }
+        getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                .TRANSPARENT));
+        setOnShowListener(new OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface sdialog)
+            {
+                if(hasTarget())
+                {
+                    revealDialogWithTarget();
+                }
+                else
+                {
+                    revealDialog();
+                }
+            }
+        });
+
         super.show();
+    }
+
+    @Override
+    public void cancel()
+    {
     }
 
     /**
@@ -185,70 +194,78 @@ public class RevealDialog extends Dialog
             return;
         }
 
-        mIsAnimating = true;
-
-        // disable mTargetView
-        mTargetView.setEnabled(false);
-        mTargetView.setClickable(false);
-
-        // change alpha of mContentView and visibility
-        mContentView.setAlpha(0f);
-        mContentView.setVisibility(View.VISIBLE);
-
-        // get original position of mTargetView
-        final int originalPos[] = getTargetLocation();
-
-        // animate mTargetView Button x transition
-        Animator targetSlideXAnim = ObjectAnimator.ofPropertyValuesHolder(mTargetView,
-                PropertyValuesHolder.ofFloat("translationX", 0f, getXDest() -
-                        originalPos[0]));
-        targetSlideXAnim.setDuration(duration);
-
-        // animate mTargetView y transition
-        Animator targetSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(mTargetView,
-                PropertyValuesHolder.ofFloat("translationY", 0f, getYDest() -
-                        originalPos[1]));
-        targetSlideYAnim.setDuration(duration);
-
-        // big radius to cover view
-        int bigRadius = Math.max(mDisplayMetrics.widthPixels, mDisplayMetrics
-                .heightPixels);
-
-        // animate mContentView reveal
-        Animator dialogRevealAnim = ViewAnimationUtils.createCircularReveal(
-                mContentView, getX(), getY(), 0, bigRadius);
-        dialogRevealAnim.setStartDelay(duration);
-        dialogRevealAnim.setDuration(duration);
-
-        // play All animations together. Interpolators must be added after playTogether()
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.playTogether(targetSlideXAnim, targetSlideYAnim, dialogRevealAnim);
-        targetSlideXAnim.setInterpolator(new AccelerateInterpolator(1.0f));
-        targetSlideYAnim.setInterpolator(new DecelerateInterpolator(0.8f));
-
-        dialogRevealAnim.addListener(new AnimatorListenerAdapter()
+        new Handler().postDelayed(new Runnable()
         {
             @Override
-            public void onAnimationStart(Animator animation)
+            public void run()
             {
-                super.onAnimationStart(animation);
+                mIsAnimating = true;
 
-                mTargetView.setVisibility(View.INVISIBLE);
-                mTargetView.setTranslationX(0f);
-                mTargetView.setTranslationY(0f);
-                mTargetView.setAlpha(1f);
-                mContentView.setAlpha(1f);
+                // disable mTargetView
+                mTargetView.setEnabled(false);
+                mTargetView.setClickable(false);
 
-                // set mTargetView back to default
-                mTargetView.setEnabled(true);
-                mTargetView.setClickable(true);
+                // change alpha of mContentView and visibility
+                mContentView.setAlpha(0f);
+                mContentView.setVisibility(View.VISIBLE);
 
-                mIsReveal = true;
-                mIsAnimating = false;
-                show();
+                // get original position of mTargetView
+                final int originalPos[] = getTargetLocation();
+
+                // animate mTargetView Button x transition
+                Animator targetSlideXAnim = ObjectAnimator.ofPropertyValuesHolder(mTargetView,
+                        PropertyValuesHolder.ofFloat("translationX", 0f, getXDest() -
+                                originalPos[0]));
+                targetSlideXAnim.setDuration(duration);
+
+                // animate mTargetView y transition
+                Animator targetSlideYAnim = ObjectAnimator.ofPropertyValuesHolder(mTargetView,
+                        PropertyValuesHolder.ofFloat("translationY", 0f, getYDest() -
+                                originalPos[1]));
+                targetSlideYAnim.setDuration(duration);
+
+                // big radius to cover view
+                int bigRadius = Math.max(mDisplayMetrics.widthPixels, mDisplayMetrics
+                        .heightPixels);
+
+                // animate mContentView reveal
+                Animator dialogRevealAnim = ViewAnimationUtils.createCircularReveal(
+                        mContentView, getX(), getY(), mTargetView.getMeasuredWidth(), bigRadius);
+                dialogRevealAnim.setStartDelay(duration);
+                dialogRevealAnim.setDuration(duration);
+
+                // play All animations together. Interpolators must be added after playTogether()
+                AnimatorSet animSet = new AnimatorSet();
+                animSet.playTogether(targetSlideXAnim, targetSlideYAnim, dialogRevealAnim);
+                targetSlideXAnim.setInterpolator(new AccelerateInterpolator(1.0f));
+                targetSlideYAnim.setInterpolator(new DecelerateInterpolator(0.8f));
+
+                dialogRevealAnim.addListener(new AnimatorListenerAdapter()
+                {
+                    @Override
+                    public void onAnimationStart(Animator animation)
+                    {
+                        super.onAnimationStart(animation);
+
+                        mTargetView.setVisibility(View.INVISIBLE);
+                        mTargetView.setTranslationX(0f);
+                        mTargetView.setTranslationY(0f);
+                        mTargetView.setAlpha(1f);
+                        mContentView.setAlpha(1f);
+
+//                        mContentView.setVisibility(View.VISIBLE);
+
+                        // set mTargetView back to default
+                        mTargetView.setEnabled(true);
+                        mTargetView.setClickable(true);
+
+                        mIsAnimating = false;
+//                        show();
+                    }
+                });
+                animSet.start();
             }
-        });
-        animSet.start();
+        }, 2);
     }
 
     /**
@@ -290,7 +307,7 @@ public class RevealDialog extends Dialog
      */
     private int getXDest()
     {
-        return (mDisplayMetrics.heightPixels / 2) - (mTargetView.getMeasuredHeight() / 2);
+        return (mDisplayMetrics.widthPixels / 2) - (mTargetView.getMeasuredWidth() / 2);
     }
 
     /**
@@ -322,6 +339,7 @@ public class RevealDialog extends Dialog
         // disable mTargetView
         mTargetView.setEnabled(false);
         mTargetView.setClickable(false);
+        mContentView.setClickable(false);
 
         // change alpha of mTargetView and visibility
         mTargetView.setAlpha(0f);
@@ -346,7 +364,7 @@ public class RevealDialog extends Dialog
 
         // animate mContentView reverse reveal
         Animator dialogContractRevealAnim = ViewAnimationUtils.createCircularReveal(
-                mContentView, getX(), getY(), bigRadius, 0);
+                mContentView, getX(), getY(), bigRadius, 100);
         dialogContractRevealAnim.setDuration(duration);
 
         // play All animations together. Interpolators must be added after playTogether()
@@ -361,8 +379,10 @@ public class RevealDialog extends Dialog
             public void onAnimationEnd(Animator animation)
             {
                 super.onAnimationEnd(animation);
-                mTargetView.setAlpha(1f);
+                AnimationArsenal.playAnimationFadeOut(getContext(), mTargetView, 50, null);
                 mContentView.setAlpha(0f);
+                mTargetView.setAlpha(1f);
+                setCancelable(mIsCancelable);
                 dismiss();
             }
         });
@@ -377,6 +397,7 @@ public class RevealDialog extends Dialog
                 mContentView.setAlpha(1f);
                 mIsAnimating = false;
 
+                mTargetView.setVisibility(View.VISIBLE);
                 // enable mTargetView
                 mTargetView.setEnabled(true);
                 mTargetView.setClickable(true);
@@ -405,5 +426,30 @@ public class RevealDialog extends Dialog
         }
         return false;
     }
-}
 
+    @Override
+    public void setCancelable(boolean flag)
+    {
+        super.setCancelable(flag);
+        mIsCancelable = flag;
+    }
+
+
+    @Override
+    public void setOnCancelListener(final OnCancelListener listener)
+    {
+        super.setOnCancelListener(new OnCancelListener()
+        {
+            @Override
+            public void onCancel(DialogInterface dialog)
+            {
+                if(listener != null)
+                {
+                    listener.onCancel(dialog);
+                }
+                setOnCancelListener(null);
+            }
+        });
+
+    }
+}
