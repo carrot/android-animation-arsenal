@@ -133,14 +133,17 @@ public class AnimationArsenal
 
         // initialize animator with circular reveal
         final Animator animatorReveal;
-        if(mode == RevealMode.SHOW) {
+        if(mode == RevealMode.SHOW)
+        {
             DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
             // big radius to cover view
             int bigRadius = Math.max(displayMetrics.widthPixels, displayMetrics
                     .heightPixels);
             animatorReveal = ViewAnimationUtils.createCircularReveal
                     (view, x, y, 0, bigRadius);
-        } else {
+        }
+        else
+        {
             int initialRadius = view.getWidth() / 2;
             animatorReveal = ViewAnimationUtils.createCircularReveal
                     (view, x, y, initialRadius, 0);
@@ -184,7 +187,8 @@ public class AnimationArsenal
      * @param fadeMode The behavior of this transition: Fade.IN or Fade.OUT
      * @return returns explode transition (null if API level 14 is less than LOLLIPOP)
      */
-    public static Transition getFadeTransition(Transition.TransitionListener listener, int duration, int fadeMode)
+    public static Transition getFadeTransition(Transition.TransitionListener listener, int
+            duration, int fadeMode)
     {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
